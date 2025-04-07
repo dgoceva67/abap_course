@@ -108,6 +108,26 @@ CLASS zcl_dg_daniela IMPLEMENTATION.
     out->write( et_travel_ids_task7_3 ).
     out->write( ztravel_table ).
 
+**********************************************************************
+*   Task 8.
+**********************************************************************
+
+    DATA:
+     et_travel_ids_task8_1 TYPE zif_abap_course_basics=>ltty_travel_id,
+     et_travel_ids_task8_2 TYPE zif_abap_course_basics=>ltty_travel_id,
+     et_travel_ids_task8_3 TYPE zif_abap_course_basics=>ltty_travel_id.
+
+    zif_abap_course_basics~open_sql(
+        IMPORTING
+            et_travel_ids_task8_1 = et_travel_ids_task8_1
+            et_travel_ids_task8_2 = et_travel_ids_task8_2
+            et_travel_ids_task8_3 = et_travel_ids_task8_3
+     ).
+
+    out->write( et_travel_ids_task8_1 ).
+    out->write( et_travel_ids_task8_2 ).
+    out->write( et_travel_ids_task8_3 ).
+
   ENDMETHOD.
 
 
@@ -288,6 +308,28 @@ CLASS zcl_dg_daniela IMPLEMENTATION.
 
 
   METHOD zif_abap_course_basics~open_sql.
+        SELECT  TRAVEL_ID
+        FROM    ZTRAVEL_DGT
+        WHERE   AGENCY_ID = '070001' AND
+                BOOKING_FEE = 20 AND
+                CURRENCY_CODE = 'JPY'
+        INTO    TABLE @et_travel_ids_task8_1.
+
+        SELECT  TRAVEL_ID
+        FROM    ZTRAVEL_DGT
+*        WHERE   TOTAL_PRICE > 2000 AND CURRENCY_CODE = 'USD'
+        WHERE   CURRENCY_CONVERSION(
+                    amount = TOTAL_PRICE,
+                    source_currency = CURRENCY_CODE,
+                    target_currency = 'USD',
+                    exchange_rate_date = @sy-datum ) > 2000
+        INTO    TABLE @et_travel_ids_task8_2.
+
+        SELECT  TRAVEL_ID
+        FROM    ZTRAVEL_DGT
+        INTO    TABLE @et_travel_ids_task8_3
+        UP TO 10 ROWS.
+
   ENDMETHOD.
 
 
