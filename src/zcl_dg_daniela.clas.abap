@@ -317,12 +317,12 @@ CLASS zcl_dg_daniela IMPLEMENTATION.
 
         SELECT  TRAVEL_ID
         FROM    ZTRAVEL_DGT
-*        WHERE   TOTAL_PRICE > 2000 AND CURRENCY_CODE = 'USD'
-        WHERE   CURRENCY_CONVERSION(
-                    amount = TOTAL_PRICE,
-                    source_currency = CURRENCY_CODE,
-                    target_currency = 'USD',
-                    exchange_rate_date = @sy-datum ) > 2000
+        WHERE   TOTAL_PRICE > 2000 AND CURRENCY_CODE = 'USD'
+*        WHERE   CURRENCY_CONVERSION(
+*                    amount = TOTAL_PRICE,
+*                    source_currency = CURRENCY_CODE,
+*                    target_currency = 'USD',
+*                    exchange_rate_date = @sy-datum ) > 2000
         INTO    TABLE @et_travel_ids_task8_2.
 
         SELECT  TRAVEL_ID
