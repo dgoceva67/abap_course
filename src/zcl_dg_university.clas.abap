@@ -11,7 +11,6 @@ CLASS zcl_dg_university DEFINITION
 ENDCLASS.
 
 
-
 CLASS zcl_dg_university IMPLEMENTATION.
 
 
