@@ -33,8 +33,8 @@ CLASS zcl_dg_university IMPLEMENTATION.
 
         lcl_university=>add_student(
             iv_student_id = student_id
-*            iv_university_id = '1' ).
-            iv_university_id = university_id ).
+            iv_university_id = '11' ).
+*            iv_university_id = university_id ).
         out->write( |Student { student_id } is added to the University { university_id }| ).
 
         DATA(list) = lcl_university=>list_students( university_id ).

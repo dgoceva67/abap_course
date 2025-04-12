@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_MSAG" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <T100A>
+    <ARBGB>ZCL_DG_MESSAGE</ARBGB>
+    <MASTERLANG>E</MASTERLANG>
+    <STEXT>Message Class</STEXT>
+   </T100A>
+   <T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCL_DG_MESSAGE</ARBGB>
+     <MSGNR>001</MSGNR>
+     <TEXT>University ID &amp;1 not found.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCL_DG_MESSAGE</ARBGB>
+     <MSGNR>002</MSGNR>
+     <TEXT>University can&apos;t created.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCL_DG_MESSAGE</ARBGB>
+     <MSGNR>003</MSGNR>
+     <TEXT>Student can&apos;t created.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCL_DG_MESSAGE</ARBGB>
+     <MSGNR>004</MSGNR>
+     <TEXT>Student ID &amp;1 not found.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCL_DG_MESSAGE</ARBGB>
+     <MSGNR>005</MSGNR>
+     <TEXT>Student ID &amp;1 can&apos;t updated.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCL_DG_MESSAGE</ARBGB>
+     <MSGNR>006</MSGNR>
+     <TEXT>THere is an error with &amp;1 University.</TEXT>
+    </T100>
+   </T100>
+  </asx:values>
+ </asx:abap>
+</abapGit>

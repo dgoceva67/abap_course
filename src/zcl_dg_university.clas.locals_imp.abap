@@ -37,7 +37,7 @@ class lcl_university definition.
             iv_university_id TYPE zuniversity_id
         RETURNING VALUE(rv_students) TYPE ty_student_info_table
         RAISING
-          zcx_student_error .
+          zcx_university_error .
   private section.
 
 endclass.
@@ -53,8 +53,9 @@ class lcl_university implementation.
 
     INSERT zuniversity_dgt FROM @ls_university.
     IF sy-subrc <> 0.
-        RAISE EXCEPTION NEW zcx_university_error(
-            iv_message = '|University { ls_university_id } not found.|').
+        RAISE EXCEPTION TYPE zcx_university_error
+            EXPORTING
+                textid = zcx_university_error=>university_cant_created.
     ENDIF.
     COMMIT WORK AND WAIT.
 
@@ -67,23 +68,29 @@ class lcl_university implementation.
         WHERE zuniversity_dgt~id = @iv_university_id
         INTO @DATA(counter).
     IF counter = 0.
-        RAISE EXCEPTION NEW zcx_university_error(
-        iv_message = |University ID { iv_university_id } not found.| ).
+        RAISE EXCEPTION TYPE zcx_university_error
+        EXPORTING
+            textid        = zcx_university_error=>university_not_found
+            university_id = iv_university_id.
     ENDIF.
 
     SELECT count( * ) FROM zstudent_dgt
         WHERE zstudent_dgt~student_id = @iv_student_id
         INTO @counter.
     IF counter = 0.
-        RAISE EXCEPTION NEW zcx_student_error(
-        iv_message = |Student ID { iv_student_id } not found.| ).
+        RAISE EXCEPTION TYPE zcx_student_error
+            EXPORTING
+                textid      = zcx_student_error=>student_not_found
+                student_id  = iv_student_id.
     ENDIF.
 
     UPDATE zstudent_dgt SET zstudent_dgt~university_id = @iv_university_id
         WHERE zstudent_dgt~student_id = @iv_student_id.
     IF sy-subrc <> 0.
-        RAISE EXCEPTION NEW zcx_student_error(
-        iv_message = |Student ID { iv_student_id } ban not be updated.| ).
+        RAISE EXCEPTION TYPE zcx_student_error
+            EXPORTING
+                textid      = zcx_student_error=>student_cant_updated
+                student_id  = iv_student_id.
     ENDIF.
     COMMIT WORK AND WAIT.
 
@@ -94,15 +101,19 @@ class lcl_university implementation.
         WHERE zstudent_dgt~student_id = @iv_student_id
         INTO @DATA(counter).
     IF counter = 0.
-        RAISE EXCEPTION NEW zcx_student_error(
-        iv_message = |Student ID { iv_student_id } not found.| ).
+        RAISE EXCEPTION TYPE zcx_student_error
+            EXPORTING
+                textid      = zcx_student_error=>student_not_found
+                student_id  = iv_student_id.
    ENDIF.
 
     UPDATE zstudent_dgt SET zstudent_dgt~university_id = ''
         WHERE zstudent_dgt~student_id = @iv_student_id.
     IF sy-subrc <> 0.
-        RAISE EXCEPTION NEW zcx_student_error(
-        iv_message = |Student ID { iv_student_id } can not be updated.| ).
+        RAISE EXCEPTION TYPE zcx_student_error
+            EXPORTING
+                textid      = zcx_student_error=>student_cant_updated
+                student_id  = iv_student_id.
     ENDIF.
     COMMIT WORK AND WAIT.
 
@@ -119,8 +130,10 @@ class lcl_university implementation.
     WHERE university_id = @iv_university_id
     INTO TABLE @rv_students.
     IF sy-subrc <> 0.
-        RAISE EXCEPTION NEW zcx_student_error(
-        iv_message = |There is an error with { iv_university_id } University.| ).
+        RAISE EXCEPTION TYPE zcx_university_error
+            EXPORTING
+                textid          = zcx_university_error=>university_error
+                university_id   = iv_university_id.
     ENDIF.
 
   endmethod.
@@ -173,8 +186,9 @@ class lcl_student implementation.
 
     INSERT zstudent_dgt FROM @ls_student.
     IF sy-subrc <> 0.
-        RAISE EXCEPTION NEW zcx_student_error(
-        iv_message = |Student can not be created.| ).
+        RAISE EXCEPTION TYPE zcx_student_error
+            EXPORTING
+                textid      = zcx_student_error=>student_cant_created.
     ENDIF.
     COMMIT WORK AND WAIT.
 
@@ -198,8 +212,10 @@ class lcl_student implementation.
     INTO @rs_student.
 
    IF sy-subrc <> 0.
-        RAISE EXCEPTION NEW zcx_student_error(
-        iv_message = |Student ID { iv_student_id } not found.| ).
+        RAISE EXCEPTION TYPE zcx_student_error
+            EXPORTING
+                textid      = zcx_student_error=>student_not_found
+                student_id  = iv_student_id.
     ENDIF.
 
   endmethod.
@@ -209,8 +225,10 @@ class lcl_student implementation.
         WHERE zstudent_dgt~student_id = @iv_student_id
         INTO @DATA(counter).
     IF counter = 0.
-        RAISE EXCEPTION NEW zcx_student_error(
-        iv_message = |Student ID { iv_student_id } not found.| ).
+        RAISE EXCEPTION TYPE zcx_student_error
+            EXPORTING
+                textid      = zcx_student_error=>student_not_found
+                student_id  = iv_student_id.
     ENDIF.
 
     UPDATE zstudent_dgt SET zstudent_dgt~name = @iv_name,
@@ -219,8 +237,10 @@ class lcl_student implementation.
         zstudent_dgt~major = @iv_major
         WHERE zstudent_dgt~student_id = @iv_student_id.
     IF sy-subrc <> 0.
-        RAISE EXCEPTION NEW zcx_student_error(
-        iv_message = |Student ID { iv_student_id } can not be updated.| ).
+        RAISE EXCEPTION TYPE zcx_student_error
+            EXPORTING
+                textid      = zcx_student_error=>student_cant_updated
+                student_id  = iv_student_id.
     ENDIF.
 
     COMMIT WORK AND WAIT.
