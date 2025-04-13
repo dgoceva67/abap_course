@@ -44,6 +44,42 @@
      <MSGNR>006</MSGNR>
      <TEXT>THere is an error with &amp;1 University.</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCL_DG_MESSAGE</ARBGB>
+     <MSGNR>007</MSGNR>
+     <TEXT>University name &amp;1 is invalid.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCL_DG_MESSAGE</ARBGB>
+     <MSGNR>008</MSGNR>
+     <TEXT>University location &amp;1 is invalid.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCL_DG_MESSAGE</ARBGB>
+     <MSGNR>009</MSGNR>
+     <TEXT>Student name &amp;1 is invalid.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCL_DG_MESSAGE</ARBGB>
+     <MSGNR>010</MSGNR>
+     <TEXT>Student age &amp;1 is invalid.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCL_DG_MESSAGE</ARBGB>
+     <MSGNR>011</MSGNR>
+     <TEXT>Student major &amp;1 is invalid.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZCL_DG_MESSAGE</ARBGB>
+     <MSGNR>012</MSGNR>
+     <TEXT>Student email &amp;1 is invalid.</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>

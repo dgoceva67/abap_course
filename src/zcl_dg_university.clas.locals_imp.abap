@@ -1,6 +1,75 @@
 *"* use this source file for the definition and implementation of
 *"* local helper classes, interface definitions and type
 *"* declarations
+class lcl_data_validator definition .
+
+  public section.
+    CLASS-METHODS is_valid_name
+        IMPORTING VALUE(iv_name) TYPE string
+        RETURNING VALUE(rv_valid) TYPE abap_bool.
+
+    CLASS-METHODS is_valid_location
+        IMPORTING VALUE(iv_location) TYPE ZUNIVERSITY_LOCATION
+        RETURNING VALUE(rv_valid) TYPE abap_bool.
+
+    CLASS-METHODS is_valid_age
+        IMPORTING VALUE(iv_age) TYPE ZSTUDENT_AGE
+        RETURNING VALUE(rv_valid) TYPE abap_bool.
+
+    CLASS-METHODS is_valid_major
+        IMPORTING VALUE(iv_major) TYPE ZSTUDENT_MAJOR
+        RETURNING VALUE(rv_valid) TYPE abap_bool.
+
+    CLASS-METHODS is_valid_email
+        IMPORTING VALUE(iv_email) TYPE ZSTUDENT_EMAIL
+        RETURNING VALUE(rv_valid) TYPE abap_bool.
+
+  protected section.
+  private section.
+
+endclass.
+
+class lcl_data_validator implementation.
+
+  method is_valid_name.
+    DATA lv_pattern TYPE string VALUE '^\p{Lu}\p{Ll}+(?:[ -]\p{Lu}\p{Ll}+)*$'.
+
+    FIND PCRE lv_pattern in iv_name
+        MATCH COUNT DATA(lv_match_count).
+    rv_valid = xsdbool( lv_match_count > 0 ).
+  endmethod.
+
+  method is_valid_location.
+    DATA lv_pattern TYPE string VALUE '^(ul\.|bul\.|zh\.k\.)\s?[A-Za-z0-9\s\-\.]+(?:,\s?(bl\.|vh\.|et\.|ap\.)\s?[A-Za-z0-9]+)*$'.
+
+    FIND PCRE lv_pattern in iv_location
+        MATCH COUNT DATA(lv_match_count).
+    rv_valid = xsdbool( lv_match_count > 0 ).
+
+  endmethod.
+
+  method is_valid_age.
+    rv_valid = xsdbool( iv_age > 18 AND iv_age < 100 ).
+  endmethod.
+
+  method is_valid_major.
+    DATA lv_pattern TYPE string VALUE '^([A-Z][a-z]+(?:\s|-)?)+$'.
+    FIND PCRE lv_pattern in iv_major
+        MATCH COUNT DATA(lv_match_count).
+    rv_valid = xsdbool( lv_match_count > 0 ).
+
+  endmethod.
+
+  method is_valid_email.
+    DATA lv_pattern TYPE string VALUE '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'.
+    FIND PCRE lv_pattern in iv_email
+        MATCH COUNT DATA(lv_match_count).
+    rv_valid = xsdbool( lv_match_count > 0 ).
+
+  endmethod.
+
+endclass.
+
 class lcl_university definition.
 
   public section.
@@ -45,6 +114,24 @@ endclass.
 class lcl_university implementation.
 
   method create_university.
+    DATA lv_valid TYPE abap_bool.
+
+    lv_valid = lcl_data_validator=>is_valid_name( iv_university_name ).
+    IF lv_valid = abap_false.
+        RAISE EXCEPTION TYPE zcx_university_error
+            EXPORTING
+                textid          = zcx_university_error=>university_name_invalid
+                university_name = iv_university_name.
+    ENDIF.
+
+    lv_valid = lcl_data_validator=>is_valid_location( iv_university_location ).
+    IF lv_valid = abap_false.
+        RAISE EXCEPTION TYPE zcx_university_error
+            EXPORTING
+                textid          = zcx_university_error=>university_location_invalid
+                university_location = iv_university_location.
+    ENDIF.
+
     DATA(lv_university_id) = cl_system_uuid=>create_uuid_c32_static( ).
     DATA(ls_university) = VALUE zuniversity_dgt(
         id            = lv_university_id
@@ -170,12 +257,26 @@ class lcl_student definition.
           zcx_student_error.
   protected section.
   private section.
+    CLASS-METHODS is_valid_student_data
+         IMPORTING
+            iv_name TYPE zstudent_name
+            iv_age TYPE zstudent_age
+            iv_major TYPE zstudent_major
+            iv_email TYPE zstudent_email
+        RAISING
+          zcx_student_error.
 
 endclass.
 
 class lcl_student implementation.
 
   method create_student.
+
+    is_valid_student_data(
+        iv_name     = iv_student_name
+        iv_age      = iv_student_age
+        iv_major    = iv_major
+        iv_email    = iv_email ).
     DATA(lv_student_id) = cl_system_uuid=>create_uuid_c32_static( ).
     DATA(ls_student) = VALUE zstudent_dgt(
         student_id    = lv_student_id
@@ -221,6 +322,12 @@ class lcl_student implementation.
   endmethod.
 
   method update_student.
+    is_valid_student_data(
+        iv_name     = iv_name
+        iv_age      = iv_age
+        iv_major    = iv_major
+        iv_email    = iv_email ).
+
     SELECT count( * ) FROM zstudent_dgt
         WHERE zstudent_dgt~student_id = @iv_student_id
         INTO @DATA(counter).
@@ -244,6 +351,43 @@ class lcl_student implementation.
     ENDIF.
 
     COMMIT WORK AND WAIT.
+
+  endmethod.
+
+  method is_valid_student_data.
+    DATA lv_valid TYPE abap_bool.
+
+    lv_valid = lcl_data_validator=>is_valid_name( iv_name ).
+    if lv_valid = abap_false.
+        RAISE EXCEPTION TYPE zcx_student_error
+            EXPORTING
+                textid          = zcx_student_error=>student_name_invalid
+                student_name = iv_name.
+    ENDIF.
+
+    lv_valid = lcl_data_validator=>is_valid_age( iv_age ).
+    if lv_valid = abap_false.
+        RAISE EXCEPTION TYPE zcx_student_error
+            EXPORTING
+                textid          = zcx_student_error=>student_age_invalid
+                student_age = iv_age.
+    ENDIF.
+
+   lv_valid = lcl_data_validator=>is_valid_major( iv_major ).
+    if lv_valid = abap_false.
+        RAISE EXCEPTION TYPE zcx_student_error
+            EXPORTING
+                textid          = zcx_student_error=>student_major_invalid
+                student_major = iv_major.
+    ENDIF.
+
+    lv_valid = lcl_data_validator=>is_valid_email( iv_email ).
+    if lv_valid = abap_false.
+        RAISE EXCEPTION TYPE zcx_student_error
+            EXPORTING
+                textid          = zcx_student_error=>student_email_invalid
+                student_email = iv_email.
+    ENDIF.
 
   endmethod.
 
