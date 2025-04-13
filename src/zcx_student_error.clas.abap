@@ -9,13 +9,13 @@ CLASS zcx_student_error DEFINITION
     INTERFACES if_t100_message .
     INTERFACES if_t100_dyn_msg .
 
-    DATA student_id TYPE char32 READ-ONLY.
+    DATA student_id TYPE ZSTUDENT_ID READ-ONLY.
 
     METHODS constructor
       IMPORTING
         !textid   LIKE if_t100_message=>t100key OPTIONAL
         !previous LIKE previous OPTIONAL
-         student_id TYPE char32 OPTIONAL .
+         student_id TYPE ZSTUDENT_ID OPTIONAL .
 
     CONSTANTS:
       begin of student_cant_created,

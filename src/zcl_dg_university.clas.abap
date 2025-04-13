@@ -28,7 +28,7 @@ CLASS zcl_dg_university IMPLEMENTATION.
             iv_student_name = 'My Name'
             iv_student_age = 20
             iv_major = 'CSE'
-            iv_email = 'my.name@univ.com').
+            iv_email = 'my.name@univ.com' ).
         out->write( |Student { student_id } is created successfully. | ).
 
         lcl_university=>add_student(
@@ -49,7 +49,7 @@ CLASS zcl_dg_university IMPLEMENTATION.
             iv_name = 'New Name'
             iv_age = 22
             iv_major = 'CyberSecurity'
-            iv_email = 'new.name@univ.com').
+            iv_email = 'new.name@univ.com' ).
         out->write( |Student { student_id } is updated successfully. | ).
 
         DATA(student) = lcl_student=>get_student( student_id ).

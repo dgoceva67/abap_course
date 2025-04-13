@@ -9,14 +9,14 @@ CLASS zcx_university_error DEFINITION
     INTERFACES if_t100_message .
     INTERFACES if_t100_dyn_msg .
 
-    DATA university_id TYPE char32 READ-ONLY.
+    DATA university_id TYPE ZUNIVERSITY_ID READ-ONLY.
 
     METHODS
       constructor
       IMPORTING
         !textid   LIKE if_t100_message=>t100key OPTIONAL
         !previous LIKE previous OPTIONAL
-         university_id TYPE char32 OPTIONAL.
+         university_id TYPE ZUNIVERSITY_ID OPTIONAL.
 
     constants:
       begin of university_not_found,
