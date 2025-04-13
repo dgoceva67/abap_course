@@ -20,14 +20,14 @@ CLASS zcl_dg_university IMPLEMENTATION.
         delete_all( ).
         DATA(university_id) = lcl_university=>create_university(
             iv_university_name = 'Sample University'
-            iv_university_location = 'Example of location'
+            iv_university_location = 'bul. Example of location 22'
         ).
         out->write( |University { university_id } is created successfully. | ).
 
         DATA(student_id) = lcl_student=>create_student(
             iv_student_name = 'My Name'
             iv_student_age = 20
-            iv_major = 'CSE'
+            iv_major = 'Computer Engineering'
             iv_email = 'my.name@univ.com' ).
         out->write( |Student { student_id } is created successfully. | ).
 
