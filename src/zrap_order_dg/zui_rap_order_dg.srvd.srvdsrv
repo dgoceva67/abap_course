@@ -1,0 +1,8 @@
+@EndUserText.label: 'Service definition for Order App'
+define service ZUI_RAP_ORDER_DG {
+  expose ZC_RAP_ORDER_DG as Orders;
+  expose ZC_RAP_ITEM_DG  as Item;
+  expose /DMO/I_Customer as Customer;
+  expose I_Currency      as Currency;
+  expose I_Country       as Country;
+}
