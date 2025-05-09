@@ -9,6 +9,7 @@ define root view entity ZC_RAP_ORDER_DG as projection on ZI_RAP_ORDER_DG as Orde
     @Search.defaultSearchElement: true
     Orderid,
     Name,
+    @Consumption.valueHelpDefinition: [{ entity: { name: 'ZI_RAP_STATUS_DG', element: 'status'} }]
     @Search.defaultSearchElement: true
     Status,
     @Consumption.valueHelpDefinition: [{ entity: { name: '/DMO/I_Customer', element: 'CustomerID'} }]

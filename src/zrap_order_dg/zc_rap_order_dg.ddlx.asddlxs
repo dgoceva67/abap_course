@@ -22,6 +22,7 @@ annotate view ZC_RAP_ORDER_DG
     @UI.hidden: true
     Orderuuid;
     
+    @EndUserText.label: 'Order ID'
     @UI: { lineItem:       [ { position: 10 } ],
            identification: [ { position: 10 } ],
            selectionField: [ { position: 10 } ] }
@@ -57,11 +58,8 @@ annotate view ZC_RAP_ORDER_DG
     
     @UI.hidden: true
     CompletionDate;
-    
-    @EndUserText.label: 'Delivery Country'
-    @UI: { lineItem:       [ { position: 70 } ],
-           identification: [ { position: 70 } ],
-           selectionField: [ { position: 70 } ] }
+
+    @UI.hidden: true    
     DeliveryCountry;
     
     @UI.hidden: true
