@@ -12,6 +12,7 @@ define view entity ZC_RAP_ITEM_DG as projection on ZI_RAP_ITEM_DG as Item
     @Consumption.valueHelpDefinition: [{entity: {name: 'I_Currency', element: 'Currency' }}]
     CurrencyCode,
     Quantity,
+    LastChangedAt,
     /* Associations */
     _Currency,
     _Order : redirected to parent ZC_RAP_ORDER_DG

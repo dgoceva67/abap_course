@@ -1,0 +1,5 @@
+CLASS zbp_i_rap_order_dg DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zi_rap_order_dg.
+ENDCLASS.
+
+CLASS zbp_i_rap_order_dg IMPLEMENTATION.
+ENDCLASS.

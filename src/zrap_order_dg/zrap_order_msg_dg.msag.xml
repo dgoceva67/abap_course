@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_MSAG" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <T100A>
+    <ARBGB>ZRAP_ORDER_MSG_DG</ARBGB>
+    <MASTERLANG>E</MASTERLANG>
+    <STEXT>RAP order messages</STEXT>
+   </T100A>
+   <T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZRAP_ORDER_MSG_DG</ARBGB>
+     <MSGNR>001</MSGNR>
+     <TEXT>Customer &amp;1 unknown</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZRAP_ORDER_MSG_DG</ARBGB>
+     <MSGNR>002</MSGNR>
+     <TEXT>Delivery country &amp;1 unknown</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZRAP_ORDER_MSG_DG</ARBGB>
+     <MSGNR>003</MSGNR>
+     <TEXT>Price &amp;1 must be ggreather than zero</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZRAP_ORDER_MSG_DG</ARBGB>
+     <MSGNR>004</MSGNR>
+     <TEXT>Quantity &amp;1 must be greather than zero</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZRAP_ORDER_MSG_DG</ARBGB>
+     <MSGNR>005</MSGNR>
+     <TEXT>The order must have at least one item</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZRAP_ORDER_MSG_DG</ARBGB>
+     <MSGNR>006</MSGNR>
+     <TEXT>Invalid Order Name &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZRAP_ORDER_MSG_DG</ARBGB>
+     <MSGNR>007</MSGNR>
+     <TEXT>Invalid /item Name &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZRAP_ORDER_MSG_DG</ARBGB>
+     <MSGNR>008</MSGNR>
+     <TEXT>Currency code &amp;1 unknown</TEXT>
+    </T100>
+   </T100>
+  </asx:values>
+ </asx:abap>
+</abapGit>

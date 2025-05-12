@@ -1,0 +1,87 @@
+managed implementation in class zbp_i_rap_order_dg unique;
+
+define behavior for ZI_RAP_ORDER_DG alias Order
+persistent table zrap_aorder_dg
+lock master
+authorization master ( instance )
+etag master LastChangedAt
+{
+  //  action setStatusCancelled result [1] $self;
+  //  action setStatusCompleted result [1] $self;
+
+  create;
+  update;
+  delete;
+
+  association _Item { create; }
+
+  field ( numbering : managed, readonly ) Orderuuid;
+  field ( readonly ) OrderId, Status, TotalPrice;
+  field ( readonly ) CreationDate, CancellationDate, CompletionDate, LastChangedAt;
+  field ( mandatory ) Name, CustomerId, DeliveryCountry, CurrencyCode;
+
+  action ( features : instance ) acceptOrder result [1] $self;
+  action ( features : instance ) rejectOrder result [1] $self;
+//  internal action recalcTotalPrice;
+
+  determination setInitialStatus on modify { create; }
+  determination calculateTotalPrice on modify { field CurrencyCode; }
+  determination calculateOrderID on save { create; }
+
+  validation validateCustomer on save { field CustomerID; create; }
+  validation validateDeliveryCountry   on save { field DeliveryCountry; create; }
+  validation validateOrderName on save { field Name; create; }
+  validation validateCurrencyCode on save { field CurrencyCode; create; }
+
+  mapping for zrap_aorder_dg
+    {
+      Orderuuid        = orderuuid;
+      Orderid          = orderid;
+      Name             = name;
+      Status           = status;
+      CustomerId       = customer_id;
+      CreationDate     = creation_date;
+      CancellationDate = cancellation_date;
+      CompletionDate   = completion_date;
+      DeliveryCountry  = delivery_country;
+      CurrencyCode     = currency_code;
+      TotalPrice       = total_price;
+      LastChangedAt    = last_changed_at;
+    }
+}
+
+
+define behavior for ZI_RAP_ITEM_DG alias Item
+persistent table zrap_aitem_dg
+lock dependent by _Order
+authorization dependent by _Order
+etag master LastChangedAt
+{
+  update;
+  delete;
+
+  association _Order;
+
+  field ( numbering : managed, readonly ) Itemuuid;
+  field ( readonly ) Orderuuid, CurrencyCode, LastChangedAt;
+  field ( mandatory ) Name, Price, Quantity;
+
+  determination calculateTotalPrice on modify { field Quantity, Price; }
+
+  validation validateQuantity on save { field Quantity; create; }
+  validation validatePrice on save { field Price; create; }
+  validation validateItemName on save { field Name; create; }
+
+  mapping for zrap_aitem_dg
+    {
+      Itemuuid      = itemuuid;
+      Orderuuid     = orderuuid;
+      Name          = name;
+      Price         = price;
+      CurrencyCode  = currency_code;
+      Quantity      = quantity;
+      LastChangedAt = last_changed_at;
+    }
+
+
+}

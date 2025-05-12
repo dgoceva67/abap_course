@@ -5,64 +5,68 @@
                 title: { type: #STANDARD, label: 'Order', value: 'OrderID' } },
   presentationVariant: [{ sortOrder: [{ by: 'CreationDate', direction:  #DESC }] }] }
 
-annotate view ZC_RAP_ORDER_DG
-    with 
+annotate view ZC_RAP_ORDER_DG with
 {
- @UI.facet: [ { id:              'Order',
-                 purpose:         #STANDARD,
-                 type:            #IDENTIFICATION_REFERENCE,
-                 label:           'Order',
-                 position:        10 },
-               { id:              'Item',
-                 purpose:         #STANDARD,
-                 type:            #LINEITEM_REFERENCE,
-                 label:           'Item',
-                 position:        20,
-                 targetElement:   '_Item'} ]  
-    @UI.hidden: true
-    Orderuuid;
-    
-    @EndUserText.label: 'Order ID'
-    @UI: { lineItem:       [ { position: 10 } ],
-           identification: [ { position: 10 } ],
-           selectionField: [ { position: 10 } ] }
-    Orderid;
-    
-    @UI: { lineItem:       [ { position: 20 } ],
-           identification: [ { position: 20 } ] }
-    Name;
-    
-    @UI: { lineItem:       [ { position: 30 } ],
-           identification: [ { position: 30 } ],
-           selectionField: [ { position: 30 } ] }
-    Status;
-    
-    @EndUserText.label: 'Creation Date'
-    @UI: { lineItem:       [ { position: 40 } ],
-           identification: [ { position: 40 } ],
-           selectionField: [ { position: 40 } ] }
-    CreationDate;
+  @UI.facet: [ { id:              'Order',
+                  purpose:         #STANDARD,
+                  type:            #IDENTIFICATION_REFERENCE,
+                  label:           'Order',
+                  position:        10 },
+                { id:              'Item',
+                  purpose:         #STANDARD,
+                  type:            #LINEITEM_REFERENCE,
+                  label:           'Item',
+                  position:        20,
+                  targetElement:   '_Item'} ]
+  @UI.hidden: true
+  Orderuuid;
 
-    @EndUserText.label: 'Customer'
-    @UI: { lineItem:       [ { position: 50 } ],
-           identification: [ { position: 50 } ],
-           selectionField: [ { position: 50 } ] }
-    CustomerId;
-    
-    @UI: { lineItem:       [ { position: 60 } ],
-           identification: [ { position: 60 } ] }
-    Complexity;
-          
-    @UI.hidden: true
-    CancellationDate;
-    
-    @UI.hidden: true
-    CompletionDate;
+  @EndUserText.label: 'Order ID'
+  @UI: { lineItem:       [ { position: 10 } ],
+         identification: [ { position: 10 } ],
+         selectionField: [ { position: 10 } ] }
+  Orderid;
 
-    @UI.hidden: true    
-    DeliveryCountry;
-    
-    @UI.hidden: true
-    TotalPrice;
-    
+  @UI: { lineItem:       [ { position: 20 } ],
+         identification: [ { position: 20 } ] }
+  Name;
+
+  @UI: {  lineItem:       [ { position: 30 },
+                             { type: #FOR_ACTION, dataAction: 'acceptOrder', label: 'Accept Order' },
+                             { type: #FOR_ACTION, dataAction: 'rejectOrder', label: 'Reject Order' }
+                           ],
+           identification: [ { position: 30 },
+                             { type: #FOR_ACTION, dataAction: 'acceptTravel', label: 'Accept Order' },
+                             { type: #FOR_ACTION, dataAction: 'rejectTravel', label: 'Reject Order' }
+                           ] }
+  Status;
+
+  @EndUserText.label: 'Creation Date'
+  @UI: { lineItem:       [ { position: 40 } ],
+         identification: [ { position: 40 } ],
+         selectionField: [ { position: 40 } ] }
+  CreationDate;
+
+  @EndUserText.label: 'Customer'
+  @UI: { lineItem:       [ { position: 50 } ],
+         identification: [ { position: 50 } ],
+         selectionField: [ { position: 50 } ] }
+  CustomerId;
+
+  @UI: { lineItem:       [ { position: 60 } ],
+         identification: [ { position: 60 } ] }
+  Complexity;
+
+  @UI.hidden: true
+  CancellationDate;
+
+  @UI.hidden: true
+  CompletionDate;
+
+  @UI.hidden: true
+  DeliveryCountry;
+
+  @UI.hidden: true
+  TotalPrice;
+
 }
