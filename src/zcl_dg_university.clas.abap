@@ -12,7 +12,14 @@ CLASS zcl_dg_university DEFINITION
 ENDCLASS.
 
 
-CLASS zcl_dg_university IMPLEMENTATION.
+
+CLASS ZCL_DG_UNIVERSITY IMPLEMENTATION.
+
+
+  METHOD delete_all.
+    DELETE FROM zstudent_dgt.
+    DELETE FROM zuniversity_dgt.
+  ENDMETHOD.
 
 
   METHOD if_oo_adt_classrun~main.
@@ -60,9 +67,4 @@ CLASS zcl_dg_university IMPLEMENTATION.
         out->write( lx_error->get_longtext( ) ).
     ENDTRY.
   ENDMETHOD.
-  METHOD delete_all.
-    DELETE FROM zstudent_dgt.
-    DELETE FROM zuniversity_dgt.
-  ENDMETHOD.
-
 ENDCLASS.

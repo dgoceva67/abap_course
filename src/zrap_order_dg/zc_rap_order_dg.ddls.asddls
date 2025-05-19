@@ -29,6 +29,7 @@ define root view entity ZC_RAP_ORDER_DG as projection on ZI_RAP_ORDER_DG as Orde
     DeliveryCountry,
     @Consumption.valueHelpDefinition: [{entity: {name: 'I_Currency', element: 'Currency' }}]
     CurrencyCode,
+    @Semantics.amount.currencyCode: 'CurrencyCode'
     TotalPrice,
     Complexity,
     LastChangedAt,

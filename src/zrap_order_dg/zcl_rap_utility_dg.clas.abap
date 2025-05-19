@@ -12,7 +12,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_rap_utility_dg IMPLEMENTATION.
+CLASS ZCL_RAP_UTILITY_DG IMPLEMENTATION.
 
 
   METHOD if_oo_adt_classrun~main.

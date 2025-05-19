@@ -19,7 +19,7 @@ ENDCLASS.
 
 
 
-CLASS zcl_dg_daniela IMPLEMENTATION.
+CLASS ZCL_DG_DANIELA IMPLEMENTATION.
 
 
   METHOD if_oo_adt_classrun~main.
@@ -358,5 +358,4 @@ CLASS zcl_dg_daniela IMPLEMENTATION.
     RETURN rv_result.
 
   ENDMETHOD.
-
 ENDCLASS.

@@ -23,38 +23,39 @@ annotate view ZC_RAP_ORDER_DG with
 
   @EndUserText.label: 'Order ID'
   @UI: { lineItem:       [ { position: 10 } ],
-         identification: [ { position: 10 } ],
+  //         identification: [ { position: 10 } ],
          selectionField: [ { position: 10 } ] }
   Orderid;
 
+  @EndUserText.label: 'Order Name'
   @UI: { lineItem:       [ { position: 20 } ],
-         identification: [ { position: 20 } ] }
+         identification: [ { position: 10 } ] }
   Name;
 
   @UI: {  lineItem:       [ { position: 30 },
-                             { type: #FOR_ACTION, dataAction: 'acceptOrder', label: 'Accept Order' },
-                             { type: #FOR_ACTION, dataAction: 'rejectOrder', label: 'Reject Order' }
-                           ],
-           identification: [ { position: 30 },
-                             { type: #FOR_ACTION, dataAction: 'acceptTravel', label: 'Accept Order' },
-                             { type: #FOR_ACTION, dataAction: 'rejectTravel', label: 'Reject Order' }
+                             { type: #FOR_ACTION, dataAction: 'setStatusCompleted', label: 'Complete Order' },
+                             { type: #FOR_ACTION, dataAction: 'setStatusCancelled', label: 'Cancel Order' }
+                             ],
+             identification: [ { position: 30 },
+                              { type: #FOR_ACTION, dataAction: 'setStatusCompleted', label: 'Complete Order' },
+                               { type: #FOR_ACTION, dataAction: 'setStatusCancelled', label: 'Cancel Order' }
                            ] }
   Status;
 
   @EndUserText.label: 'Creation Date'
   @UI: { lineItem:       [ { position: 40 } ],
-         identification: [ { position: 40 } ],
+  //         identification: [ { position: 40 } ],
          selectionField: [ { position: 40 } ] }
   CreationDate;
 
   @EndUserText.label: 'Customer'
   @UI: { lineItem:       [ { position: 50 } ],
-         identification: [ { position: 50 } ],
+         identification: [ { position: 20 } ],
          selectionField: [ { position: 50 } ] }
   CustomerId;
 
-  @UI: { lineItem:       [ { position: 60 } ],
-         identification: [ { position: 60 } ] }
+  @EndUserText.label: 'Complexity'
+  @UI: { lineItem:       [ { position: 60 } ] }
   Complexity;
 
   @UI.hidden: true
@@ -63,10 +64,16 @@ annotate view ZC_RAP_ORDER_DG with
   @UI.hidden: true
   CompletionDate;
 
-  @UI.hidden: true
+  @EndUserText.label: 'Delivery Country'
+  @UI: { identification: [ { position: 30 } ] }
   DeliveryCountry;
 
-  @UI.hidden: true
+  @EndUserText.label: 'Currency'
+  @UI: { identification: [ { position: 40 } ] }
+  CurrencyCode;
+
+  @EndUserText.label: 'Total Price'
+  @UI: { identification: [ { position: 50 } ] }
   TotalPrice;
 
 }

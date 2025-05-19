@@ -101,7 +101,7 @@ ENDCLASS.
 
 
 
-CLASS zcx_student_error IMPLEMENTATION.
+CLASS ZCX_STUDENT_ERROR IMPLEMENTATION.
 
 
   METHOD constructor ##ADT_SUPPRESS_GENERATION.
@@ -130,5 +130,4 @@ CLASS zcx_student_error IMPLEMENTATION.
       if_t100_message~t100key = textid.
     ENDIF.
   ENDMETHOD.
-
 ENDCLASS.

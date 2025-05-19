@@ -1,20 +1,28 @@
 projection;
-//strict ( 2 ); //Uncomment this line in order to enable strict mode 2. The strict mode has two variants (strict(1), strict(2)) and is prerequisite to be future proof regarding syntax and to be able to release your BO.
+strict ( 2 ); //Uncomment this line in order to enable strict mode 2. The strict mode has two variants (strict(1), strict(2)) and is prerequisite to be future proof regarding syntax and to be able to release your BO.
+
+use draft;
+
+
+use side effects;
 
 define behavior for ZC_RAP_ORDER_DG alias Order
 use etag
 {
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Resume;
+  use action Prepare;
+
   use create;
   use update;
   use delete;
 
-  //  use action setStatusCancelled;
-  //  use action setStatusCompleted;
+  use association _Item { create; with draft; }
 
-  use association _Item { create; }
-
-  use action acceptOrder;
-  use action rejectOrder;
+  use action setStatusCancelled;
+  use action setStatusCompleted;
 }
 
 define behavior for ZC_RAP_ITEM_DG alias Item
@@ -23,5 +31,5 @@ use etag
   use update;
   use delete;
 
-  use association _Order;
+  use association _Order { with draft; }
 }
