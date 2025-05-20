@@ -36,7 +36,7 @@ annotate view ZC_RAP_ORDER_DG with
                              { type: #FOR_ACTION, dataAction: 'setStatusCompleted', label: 'Complete Order' },
                              { type: #FOR_ACTION, dataAction: 'setStatusCancelled', label: 'Cancel Order' }
                              ],
-             identification: [ { position: 30 },
+             identification: [ { position: 20 },
                               { type: #FOR_ACTION, dataAction: 'setStatusCompleted', label: 'Complete Order' },
                                { type: #FOR_ACTION, dataAction: 'setStatusCancelled', label: 'Cancel Order' }
                            ] }
@@ -50,7 +50,7 @@ annotate view ZC_RAP_ORDER_DG with
 
   @EndUserText.label: 'Customer'
   @UI: { lineItem:       [ { position: 50 } ],
-         identification: [ { position: 20 } ],
+         identification: [ { position: 30 } ],
          selectionField: [ { position: 50 } ] }
   CustomerId;
 
@@ -69,7 +69,7 @@ annotate view ZC_RAP_ORDER_DG with
   DeliveryCountry;
 
   @EndUserText.label: 'Currency'
-  @UI: { identification: [ { position: 40 } ] }
+//  @UI: { identification: [ { position: 40 } ] }
   CurrencyCode;
 
   @EndUserText.label: 'Total Price'

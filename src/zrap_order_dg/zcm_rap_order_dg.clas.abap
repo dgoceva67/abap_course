@@ -97,7 +97,7 @@ CLASS zcm_rap_order_dg DEFINITION
         price           TYPE /dmo/price OPTIONAL
         ordername       TYPE string OPTIONAL
         itemname        TYPE string OPTIONAL
-        quatity         TYPE zde_quantity_dg OPTIONAL.
+        quantity        TYPE zde_quantity_dg OPTIONAL.
 
     DATA customerid TYPE string READ-ONLY.
     DATA deliverycountry TYPE string READ-ONLY.

@@ -1,29 +1,33 @@
 managed implementation in class zbp_i_rap_order_item_dg unique;
-strict(2);
+strict ( 2 );
+
+with draft;
 
 define behavior for ZI_RAP_ORDER_DG alias Order
 implementation in class zbp_i_rap_order_dg unique
 persistent table zrap_aorder_dg
-lock master
+draft table zrap_dorder_dg
+lock master total etag LastChangedAt
 authorization master ( instance )
 etag master LastChangedAt
 {
   action ( features : instance ) setStatusCancelled result [1] $self;
   action ( features : instance ) setStatusCompleted result [1] $self;
-//  draft action ( features : instance ) Edit;
+  draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Resume;
 
   create;
   update ( features : instance );
   delete ( features : instance );
 
-  association _Item { create ( features : instance ); }
+  association _Item { create ( features : instance ); with draft; }
 
   field ( numbering : managed, readonly ) Orderuuid;
   field ( readonly ) OrderId, Status, TotalPrice;
   field ( readonly ) CreationDate, CancellationDate, CompletionDate, LastChangedAt;
   field ( mandatory ) Name, CustomerId, DeliveryCountry, CurrencyCode;
-
-  //  internal action recalcTotalPrice;
 
   determination setInitialStatus on modify { create; }
   determination setCreationDate on modify { create; }
@@ -37,6 +41,14 @@ etag master LastChangedAt
   validation validateCurrencyCode on save { field CurrencyCode; create; update; }
 
   side effects { field CurrencyCode affects field _Item.CurrencyCode; }
+
+  draft determine action Prepare
+  {
+    validation validateDeliveryCountry;
+    validation validateCustomer;
+    validation validateOrderName;
+    validation validateCurrencyCode;
+  }
 
   mapping for zrap_aorder_dg
     {
@@ -59,6 +71,7 @@ etag master LastChangedAt
 define behavior for ZI_RAP_ITEM_DG alias Item
 implementation in class zbp_i_rap_item_dg unique
 persistent table zrap_aitem_dg
+draft table zrap_ditem_dg
 lock dependent by _Order
 authorization dependent by _Order
 etag master LastChangedAt
@@ -66,21 +79,22 @@ etag master LastChangedAt
   update ( features : instance );
   delete ( features : instance );
 
-  association _Order;
+  association _Order { with draft; }
 
   field ( numbering : managed, readonly ) Itemuuid;
-  field ( readonly ) Orderuuid, CurrencyCode, LastChangedAt;
+  field ( readonly ) Orderuuid, LastChangedAt;
   field ( mandatory ) Name, Price, Quantity;
 
   determination calculateTotalPrice on modify { field Quantity, Price; }
-  determination initCurrencyCode on save { create; }
+  determination initCurrencyCode on modify { create; }
 
   validation validateQuantity on save { field Quantity; create; }
   validation validatePrice on save { field Price; create; }
   validation validateItemName on save { field Name; create; }
 
-  side effects { field Price affects field _Order.TotalPrice;
-                 field Quantity affects field _Order.TotalPrice; }
+  side effects
+  { field Price affects field _Order.TotalPrice;
+    field Quantity affects field _Order.TotalPrice; }
 
   mapping for zrap_aitem_dg
     {

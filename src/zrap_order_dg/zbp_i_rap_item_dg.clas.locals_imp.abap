@@ -50,7 +50,6 @@ CLASS lhc_Item IMPLEMENTATION.
                                       ELSE if_abap_behv=>fc-o-enabled  )
              IN
             ( %tky                 = order-%tky
-*              %action-Edit = is_disabled
               %features-%update = is_disabled
               %features-%delete = is_disabled
              ) ).
@@ -96,7 +95,8 @@ CLASS lhc_Item IMPLEMENTATION.
     MODIFY ENTITIES OF zi_rap_order_dg IN LOCAL MODE
       ENTITY Order
         UPDATE FIELDS ( TotalPrice )
-        WITH CORRESPONDING #( orders ).
+        WITH update
+        REPORTED DATA(update_reported).
 
   ENDMETHOD.
 
@@ -163,7 +163,8 @@ CLASS lhc_Item IMPLEMENTATION.
           %tky = item-%tky
           %msg = NEW zcm_rap_order_dg(
                     severity = if_abap_behv_message=>severity-error
-                    textid   = zcm_rap_order_dg=>price_greather_than_0 )
+                    textid   = zcm_rap_order_dg=>price_greather_than_0
+                    price = item-Price )
           %element-price = if_abap_behv=>mk-on )
           TO reported-Item.
       ENDIF.
@@ -179,13 +180,14 @@ CLASS lhc_Item IMPLEMENTATION.
       RESULT DATA(items).
 
     LOOP AT items INTO DATA(item).
-      IF item-quantity <= 0.
+      IF item-quantity < 1.
         APPEND VALUE #( %tky = item-%tky ) TO failed-Item.
         APPEND VALUE #(
           %tky = item-%tky
           %msg = NEW zcm_rap_order_dg(
                     severity = if_abap_behv_message=>severity-error
-                    textid   = zcm_rap_order_dg=>quantity_greather_than_0 )
+                    textid   = zcm_rap_order_dg=>quantity_greather_than_0
+                    quantity = item-Quantity )
           %element-quantity = if_abap_behv=>mk-on )
           TO reported-Item.
       ENDIF.
