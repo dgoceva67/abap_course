@@ -27,6 +27,7 @@ association [0..1] to I_Country as _Country on $projection.DeliveryCountry = _Co
     completion_date as CompletionDate,
     delivery_country as DeliveryCountry,
     currency_code as CurrencyCode,
+    @Semantics.amount.currencyCode: 'CurrencyCode'
     total_price as TotalPrice,
     @Semantics.systemDateTime.lastChangedAt: true
     last_changed_at as LastChangedAt,

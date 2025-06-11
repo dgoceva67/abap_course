@@ -10,9 +10,9 @@ annotate view ZC_RAP_ORDER_DG with
   @UI.facet: [ { id:              'Order',
                   purpose:         #STANDARD,
                   type:            #IDENTIFICATION_REFERENCE,
-                  label:           'Order',
+                  label:           'Order ID',
                   position:        10 },
-                { id:              'Item',
+               { id:              'Item',
                   purpose:         #STANDARD,
                   type:            #LINEITEM_REFERENCE,
                   label:           'Item',
@@ -23,7 +23,7 @@ annotate view ZC_RAP_ORDER_DG with
 
   @EndUserText.label: 'Order ID'
   @UI: { lineItem:       [ { position: 10 } ],
-  //         identification: [ { position: 10 } ],
+  //        identification: [ { position: 10 } ],
          selectionField: [ { position: 10 } ] }
   Orderid;
 
@@ -36,7 +36,7 @@ annotate view ZC_RAP_ORDER_DG with
                              { type: #FOR_ACTION, dataAction: 'setStatusCompleted', label: 'Complete Order' },
                              { type: #FOR_ACTION, dataAction: 'setStatusCancelled', label: 'Cancel Order' }
                              ],
-             identification: [ { position: 20 },
+             identification: [ { position: 30 },
                               { type: #FOR_ACTION, dataAction: 'setStatusCompleted', label: 'Complete Order' },
                                { type: #FOR_ACTION, dataAction: 'setStatusCancelled', label: 'Cancel Order' }
                            ] }
@@ -44,13 +44,13 @@ annotate view ZC_RAP_ORDER_DG with
 
   @EndUserText.label: 'Creation Date'
   @UI: { lineItem:       [ { position: 40 } ],
-  //         identification: [ { position: 40 } ],
+         identification: [ { position: 50 } ],
          selectionField: [ { position: 40 } ] }
   CreationDate;
 
   @EndUserText.label: 'Customer'
   @UI: { lineItem:       [ { position: 50 } ],
-         identification: [ { position: 30 } ],
+         identification: [ { position: 20 } ],
          selectionField: [ { position: 50 } ] }
   CustomerId;
 
@@ -58,22 +58,23 @@ annotate view ZC_RAP_ORDER_DG with
   @UI: { lineItem:       [ { position: 60 } ] }
   Complexity;
 
-  @UI.hidden: true
+  @EndUserText.label: 'Cancellation Date'
+  @UI: { identification: [ { position: 70 } ] }
   CancellationDate;
 
-  @UI.hidden: true
+  @EndUserText.label: 'Completed Date'
+  @UI: { identification: [ { position: 60 } ] }
   CompletionDate;
 
   @EndUserText.label: 'Delivery Country'
-  @UI: { identification: [ { position: 30 } ] }
+  @UI: { identification: [ { position: 40 } ] }
   DeliveryCountry;
 
   @EndUserText.label: 'Currency'
-//  @UI: { identification: [ { position: 40 } ] }
   CurrencyCode;
 
   @EndUserText.label: 'Total Price'
-  @UI: { identification: [ { position: 50 } ] }
+  @UI: { identification: [ { position: 80 } ] }
   TotalPrice;
 
 }

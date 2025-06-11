@@ -41,7 +41,7 @@ CLASS zcm_rap_order_dg DEFINITION
       BEGIN OF quantity_greather_than_0,
         msgid TYPE symsgid VALUE 'ZRAP_ORDER_MSG_DG',
         msgno TYPE symsgno VALUE '004',
-        attr1 TYPE scx_attrname VALUE 'QUATITY',
+        attr1 TYPE scx_attrname VALUE 'QUANTITY',
         attr2 TYPE scx_attrname VALUE '',
         attr3 TYPE scx_attrname VALUE '',
         attr4 TYPE scx_attrname VALUE '',
@@ -86,6 +86,16 @@ CLASS zcm_rap_order_dg DEFINITION
         attr4 TYPE scx_attrname VALUE '',
       END OF currency_code_unknown .
 
+    CONSTANTS:
+      BEGIN OF order_has_no_item,
+        msgid TYPE symsgid VALUE 'ZRAP_ORDER_MSG_DG',
+        msgno TYPE symsgno VALUE '009',
+        attr1 TYPE scx_attrname VALUE 'ORDERID',
+        attr2 TYPE scx_attrname VALUE '',
+        attr3 TYPE scx_attrname VALUE '',
+        attr4 TYPE scx_attrname VALUE '',
+      END OF order_has_no_item .
+
     METHODS constructor
       IMPORTING
         severity        TYPE if_abap_behv_message=>t_severity DEFAULT if_abap_behv_message=>severity-error
@@ -94,10 +104,11 @@ CLASS zcm_rap_order_dg DEFINITION
         customerid      TYPE /dmo/customer_id OPTIONAL
         currencycode    TYPE /dmo/currency_code OPTIONAL
         deliverycountry TYPE land1 OPTIONAL
-        price           TYPE /dmo/price OPTIONAL
+        price           TYPE zde_price_dg OPTIONAL
         ordername       TYPE string OPTIONAL
         itemname        TYPE string OPTIONAL
-        quantity        TYPE zde_quantity_dg OPTIONAL.
+        quantity        TYPE zde_quantity_dg OPTIONAL
+        orderid         TYPE string OPTIONAL .
 
     DATA customerid TYPE string READ-ONLY.
     DATA deliverycountry TYPE string READ-ONLY.
@@ -106,6 +117,7 @@ CLASS zcm_rap_order_dg DEFINITION
     DATA ordername TYPE string READ-ONLY.
     DATA itemname TYPE string READ-ONLY.
     DATA currencycode TYPE string READ-ONLY.
+    DATA orderid TYPE string READ-ONLY.
 
   PROTECTED SECTION.
   PRIVATE SECTION.

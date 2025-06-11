@@ -1,4 +1,4 @@
-managed implementation in class zbp_i_rap_order_item_dg unique;
+managed;
 strict ( 2 );
 
 with draft;
@@ -17,6 +17,9 @@ etag master LastChangedAt
   draft action Activate optimized;
   draft action Discard;
   draft action Resume;
+
+  internal action calculateTotalPrice;
+
 
   create;
   update ( features : instance );
@@ -40,6 +43,8 @@ etag master LastChangedAt
   validation validateOrderName on save { field Name; create; }
   validation validateCurrencyCode on save { field CurrencyCode; create; update; }
 
+  validation checkHasItems on save { create; update; }
+
   side effects { field CurrencyCode affects field _Item.CurrencyCode; }
 
   draft determine action Prepare
@@ -48,6 +53,10 @@ etag master LastChangedAt
     validation validateCustomer;
     validation validateOrderName;
     validation validateCurrencyCode;
+    validation checkHasItems;
+    validation Item~validateQuantity;
+    validation Item~validatePrice;
+    validation Item~validateItemName;
   }
 
   mapping for zrap_aorder_dg
@@ -77,15 +86,17 @@ authorization dependent by _Order
 etag master LastChangedAt
 {
   update ( features : instance );
-  delete ( features : instance );
+  delete ( features : instance, precheck );
 
   association _Order { with draft; }
 
   field ( numbering : managed, readonly ) Itemuuid;
   field ( readonly ) Orderuuid, LastChangedAt;
   field ( mandatory ) Name, Price, Quantity;
+  field ( features : instance ) CurrencyCode;
 
-  determination calculateTotalPrice on modify { field Quantity, Price; }
+  determination calculateOnModify on modify { field Quantity, Price; }
+  determination calculateOnDelete on modify { delete; }
   determination initCurrencyCode on modify { create; }
 
   validation validateQuantity on save { field Quantity; create; }
@@ -94,7 +105,8 @@ etag master LastChangedAt
 
   side effects
   { field Price affects field _Order.TotalPrice;
-    field Quantity affects field _Order.TotalPrice; }
+    field Quantity affects field _Order.TotalPrice;
+}
 
   mapping for zrap_aitem_dg
     {

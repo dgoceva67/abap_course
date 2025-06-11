@@ -36,6 +36,12 @@ CLASS lhc_Order DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS validateOrderName FOR VALIDATE ON SAVE
       IMPORTING keys FOR order~validateOrderName.
 
+    METHODS checkHasItems FOR VALIDATE ON SAVE
+      IMPORTING keys FOR Order~checkHasItems.
+
+    METHODS calculatetotalprice FOR MODIFY
+      IMPORTING keys FOR ACTION Order~calculateTotalPrice.
+
 ENDCLASS.
 
 CLASS lhc_Order IMPLEMENTATION.
@@ -66,9 +72,8 @@ CLASS lhc_Order IMPLEMENTATION.
             ( %tky                 = order-%tky
               %action-setStatusCompleted = is_disabled
               %action-setStatusCancelled = is_disabled
-*              %action-Edit = is_disabled
-              %features-%update = is_disabled
-              %features-%delete = is_disabled
+              %update = is_disabled
+              %delete = is_disabled
               %assoc-_Item = is_disabled
              ) ).
   ENDMETHOD.
@@ -221,7 +226,7 @@ CLASS lhc_Order IMPLEMENTATION.
     ENDLOOP.
   ENDMETHOD.
 
- METHOD validateOrderName.
+  METHOD validateOrderName.
     READ ENTITIES OF zi_rap_order_dg IN LOCAL MODE
      ENTITY Order
      FIELDS ( name )
@@ -395,6 +400,79 @@ CLASS lhc_Order IMPLEMENTATION.
     result = VALUE #( FOR order IN orders
                         ( %tky   = order-%tky
                           %param = order ) ).
+  ENDMETHOD.
+
+  METHOD checkHasItems.
+
+    READ ENTITIES OF zi_rap_order_dg IN LOCAL MODE
+       ENTITY Order
+       FIELDS ( orderuuid orderid ) WITH CORRESPONDING #( keys )
+       RESULT DATA(orders).
+
+    READ ENTITIES OF zi_rap_order_dg IN LOCAL MODE
+       ENTITY Order BY \_Item
+       FIELDS ( orderuuid itemuuid ) WITH CORRESPONDING #( keys )
+       RESULT DATA(items).
+
+    LOOP AT orders INTO DATA(order).
+      IF NOT LINE_EXISTS( items[ orderuuid = order-orderuuid ] ).
+        APPEND VALUE #( %tky = order-%tky ) TO failed-order.
+
+        APPEND VALUE #( %tky        = order-%tky
+                        %state_area = 'ORDER_HAS_NO_ITEM'
+                        %msg        = NEW zcm_rap_order_dg(
+                                          severity = if_abap_behv_message=>severity-error
+                                          textid   = zcm_rap_order_dg=>order_has_no_item
+                                          orderid = |{ order-orderid }| )
+                        %element-orderid = if_abap_behv=>mk-on )
+          TO reported-order.
+      ENDIF.
+    ENDLOOP.
+  ENDMETHOD.
+
+    METHOD calculateTotalPrice.
+    DATA update TYPE TABLE FOR UPDATE ZI_RAP_Order_dg.
+    DATA lv_default_status TYPE zde_status_dg.
+
+    SELECT SINGLE Statusid
+    FROM zi_rap_status_dg
+    WHERE status_text = 'In Process'
+    INTO @lv_default_status.
+
+    READ ENTITIES OF zi_rap_order_dg IN LOCAL MODE
+      ENTITY Order
+        FIELDS ( Orderuuid Status TotalPrice ) WITH CORRESPONDING #( keys )
+      RESULT DATA(orders).
+
+    " Remove all order instance data with defined status
+    DELETE orders WHERE Status <> lv_default_status.
+    CHECK orders IS NOT INITIAL.
+
+    READ ENTITIES OF zi_rap_order_dg IN LOCAL MODE
+      ENTITY Order BY \_Item
+      FIELDS ( Orderuuid Quantity Price )
+      WITH CORRESPONDING #( orders )
+      RESULT DATA(items).
+
+    LOOP AT orders ASSIGNING FIELD-SYMBOL(<order>).
+      CLEAR <order>-TotalPrice.
+
+      LOOP AT items INTO DATA(item).
+        IF <order>-Orderuuid = item-Orderuuid.
+          <order>-TotalPrice += item-Quantity * item-Price.
+        ENDIF.
+      ENDLOOP.
+      APPEND VALUE #( %tky = <order>-%tky
+                      TotalPrice =  <order>-TotalPrice ) TO update.
+
+    ENDLOOP.
+    " write back the modified total_price of orders
+    MODIFY ENTITIES OF zi_rap_order_dg IN LOCAL MODE
+      ENTITY Order
+        UPDATE FIELDS ( TotalPrice )
+        WITH update
+        REPORTED DATA(update_reported).
+
   ENDMETHOD.
 
 ENDCLASS.
